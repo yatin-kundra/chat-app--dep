@@ -8,22 +8,20 @@ import chatRoutes from "./Routers/chatRoutes.js"
 import messageRoutes from "./Routers/messageRoutes.js"
 import {errorHandler, notFound} from "./middleware/errorMiddleware.js"
 import path from 'path'
+import cors from 'cors'; // Import cors
+
 dotenv.config()
 connectDB()
 
 const app = express()
 
 app.use(express.json());
+app.use(cors()); // Add this line to enable CORS for all routes
 
 // const port = process.env.PORT || 1235
 
-
-
-
 app.use("/api/chat",chatRoutes);
-
 app.use('/api/user',userRoutes);
-
 app.use("/api/messages", messageRoutes);
 
 // --------------------Deployment------------
@@ -44,9 +42,7 @@ if (process.env.NODE_ENV === "production") {
 
 // --------------------Deployment------------
 
-
 // error handling -- if user go to some other page 
-
 app.use(notFound);
 app.use(errorHandler);
 
@@ -61,11 +57,12 @@ import exp from 'constants';
 const io = new Server(server, {
     pingTimeout: 60000,
     cors: {
-        origin: 'http://localhost:3003',
+        origin: process.env.FRONTEND_URL || 'http://localhost:3000',
+        methods: ["GET", "POST"],
+        allowedHeaders: ["my-custom-header"],
+        credentials: true
     }
 });
-
-
 
 io.on("connection", (socket) => {
   console.log("socket is connected")
@@ -106,6 +103,3 @@ io.on("connection", (socket) => {
             socket.leave(userData._id)
     })
 });
-
-
-
