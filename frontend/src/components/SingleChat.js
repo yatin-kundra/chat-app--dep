@@ -14,7 +14,8 @@ import Lottie from "lottie-react"
 
 import * as animationData from "../animations/typing.json";
 
-const ENDPOINT = "http://localhost:11225";
+// const ENDPOINT = "http://localhost:11225";
+const ENDPOINT = "https://vartalaap-32iw.onrender.com/";
 var socket, selectedChatCompare;
 
 const SingleChat = ({fetchAgain, setfetchAgain}) => {
